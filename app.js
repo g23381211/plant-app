@@ -390,7 +390,7 @@ function buildSeedState(){
 
   return {
     plants,
-    settings: { notifyTime:"08:00", quietStart:"22:00", quietEnd:"07:00", mergeNotifications:false, travelMode:false },
+    settings: { notifyTime:"08:00", quietStart:"22:00", quietEnd:"07:00", mergeNotifications:false, travelMode:false, weatherRegion:"台北市" },
     dismissedToday: { date: "", ids: [] }
   };
 }
@@ -564,15 +564,14 @@ function renderHome(){
   const hour = now.getHours();
   const greet = hour < 11 ? "早安" : (hour < 18 ? "午安" : "晚安");
   eyebrow.textContent = `${greet}，今天也要好好照顧植物們`;
-  document.getElementById("todayDate").textContent = `${now.getMonth()+1} 月 ${now.getDate()} 日 ${fmtWeekday(now)}`;
+  document.getElementById("todayDate").textContent = `${now.getMonth()+1}月${now.getDate()} ${fmtWeekday(now)}`;
 
-  const firstPlant = state.plants[0];
-  const region = (firstPlant && firstPlant.region) || "台北市";
-  const district = (firstPlant && firstPlant.district) || "";
-  const w = getWeatherSync(region, district);
-  const place = district ? `${region}${district}` : region;
+  const region = (state.settings && state.settings.weatherRegion) || "台北市";
+  const w = getWeatherSync(region, "");
+  const regionSelect = document.getElementById("weatherRegionSelect");
+  if(regionSelect && regionSelect.value !== region) regionSelect.value = region;
   document.getElementById("weatherMini").innerHTML =
-    `<svg class="icon"><use href="#${weatherIcon(w)}"/></svg><span>${place} ${w.tempLow}°–${w.tempHigh}° · ${w.condition}${w.isMock ? "（模擬）" : ""}</span>`;
+    `<svg class="icon"><use href="#${weatherIcon(w)}"/></svg><span>${region} ${w.tempLow}°–${w.tempHigh}° · ${w.condition}${w.isMock ? "（模擬）" : ""}</span>`;
 
   const dismissed = getDismissedSet();
   const items = buildTodoItems();
@@ -1163,8 +1162,18 @@ function initEvents(){
       if(target === "add") openAdd(); else switchTab(target);
     });
   });
+  document.querySelectorAll('.fab-inline[data-nav="add"]').forEach(btn => btn.addEventListener("click", openAdd));
   document.querySelectorAll('[data-nav="back"]').forEach(btn => btn.addEventListener("click", goBack));
   document.querySelectorAll('[data-nav="plants"]').forEach(btn => { if(!btn.classList.contains("nav-btn")) btn.addEventListener("click", () => switchTab("plants")); });
+  const weatherRegionSelect = document.getElementById("weatherRegionSelect");
+  if(weatherRegionSelect){
+    weatherRegionSelect.addEventListener("change", (e) => {
+      if(!state.settings) state.settings = {};
+      state.settings.weatherRegion = e.target.value;
+      saveState();
+      renderHome();
+    });
+  }
 
   document.getElementById("detailTabs").addEventListener("click", (e) => {
     const btn = e.target.closest(".tab-btn");
@@ -1267,6 +1276,8 @@ function init(){
   state = loadState();
   if(!state){ state = buildSeedState(); saveState(); }
   if(!state.dismissedToday) state.dismissedToday = { date:"", ids:[] };
+  if(!state.settings) state.settings = {};
+  if(!state.settings.weatherRegion) state.settings.weatherRegion = "台北市";
   initEvents();
   render("home");
 

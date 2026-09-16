@@ -98,7 +98,14 @@
         <p class="eyebrow">哈囉 <span id="greetName">植物人</span> 👋</p>
         <h1 id="todayDate" class="page-title">今天</h1>
       </div>
-      <div class="weather-chip" id="weatherMini"></div>
+      <div class="weather-wrap">
+        <div class="weather-chip" id="weatherMini"></div>
+        <select class="weather-region-select" id="weatherRegionSelect">
+          <option value="台北市">台北市</option>
+          <option value="新北市">新北市</option>
+          <option value="桃園市">桃園市</option>
+        </select>
+      </div>
     </header>
 
     <section class="section">
@@ -361,7 +368,6 @@
 <nav class="bottom-nav" id="bottomNav">
   <button class="nav-btn active" data-nav="home"><svg class="icon"><use href="#icon-home"/></svg><span>首頁</span></button>
   <button class="nav-btn" data-nav="plants"><svg class="icon"><use href="#icon-leaf"/></svg><span>植物</span></button>
-  <button class="nav-btn nav-add" data-nav="add"><svg class="icon"><use href="#icon-plus"/></svg></button>
   <button class="nav-btn" data-nav="gallery"><svg class="icon"><use href="#icon-image"/></svg><span>相簿</span></button>
   <button class="nav-btn" data-nav="settings"><svg class="icon"><use href="#icon-gear"/></svg><span>設定</span></button>
 </nav>

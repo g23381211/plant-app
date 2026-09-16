@@ -60,15 +60,21 @@ img{ -webkit-user-drag:none; user-select:none; }
 @keyframes fadeIn{ from{ opacity:0; transform: translateY(6px);} to{opacity:1; transform:none;} }
 
 /* ---------- Topbar / Subbar ---------- */
-.topbar{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; }
-.eyebrow{ margin:0 0 2px; font-size:.85rem; color: var(--ink-soft); }
-.page-title{ margin:0; font-size:1.6rem; letter-spacing:.5px; }
+.topbar{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; gap:10px; }
+.topbar-hello{ min-width:0; flex-shrink:1; }
+.eyebrow{ margin:0 0 2px; font-size:.85rem; color: var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.page-title{ margin:0; font-size:1.6rem; letter-spacing:.5px; white-space:nowrap; }
+.weather-wrap{ display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
 .weather-chip{
   display:flex; align-items:center; gap:6px;
   background: var(--white); border:2.5px solid var(--line); border-radius: 999px;
   padding:8px 14px; box-shadow: var(--shadow-off-sm); font-size:.85rem; white-space:nowrap;
 }
 .weather-chip .icon{ width:18px; height:18px; }
+.weather-region-select{
+  border:2px solid var(--line); border-radius:999px; background: var(--paper);
+  font-size:.75rem; padding:3px 10px; color: var(--ink); font-family: inherit;
+}
 
 .subbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:8px; }
 .subbar .page-title{ flex:1; text-align:center; font-size:1.35rem; }
@@ -283,13 +289,6 @@ img{ -webkit-user-drag:none; user-select:none; }
 .nav-btn.active{ color: var(--ink); }
 .nav-btn.active .icon{ stroke: var(--ink); }
 .nav-btn .icon{ stroke: var(--ink-soft); width:22px; height:22px; }
-.nav-add{ position:relative; }
-.nav-add .icon{ width:26px; height:26px; stroke: var(--ink); }
-.nav-add::before{
-  content:""; position:absolute; top:-22px; width:52px; height:52px; border-radius:50%;
-  background: var(--yellow); border:2.5px solid var(--line); box-shadow: var(--shadow-off-sm); z-index:-1;
-}
-.nav-add{ margin-top:-22px; padding-top:26px; }
 
 .bottom-spacer{ height:20px; }
 
