@@ -320,6 +320,11 @@ img{ -webkit-user-drag:none; user-select:none; }
 }
 .modal-toast.open{ display:flex; animation: fadeIn .2s ease; }
 .modal-toast .icon{ stroke: var(--white); width:18px; height:18px; }
+.toast-undo-btn{
+  flex-shrink:0; margin-left:4px; padding:5px 12px; border-radius:999px;
+  background: var(--yellow); color: var(--ink); font-size:.82rem; font-weight:600; border:none;
+}
+.toast-undo-btn:active{ opacity:.8; }
 
 /* ---------- Misc ---------- */
 ::placeholder{ color: rgba(34,29,20,0.4); }

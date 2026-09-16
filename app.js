@@ -472,12 +472,16 @@ function closeModal(){
   document.querySelectorAll("#modalBackdrop .modal").forEach(m => m.classList.remove("open"));
 }
 let toastTimer = null;
-function showToast(text){
+let toastUndoHandler = null;
+function showToast(text, onUndo){
   const t = document.getElementById("toastModal");
   document.getElementById("toastText").textContent = text;
+  const undoBtn = document.getElementById("toastUndoBtn");
+  toastUndoHandler = onUndo || null;
+  undoBtn.hidden = !onUndo;
   t.classList.add("open");
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove("open"), 2600);
+  toastTimer = setTimeout(() => { t.classList.remove("open"); toastUndoHandler = null; }, onUndo ? 5000 : 2600);
 }
 
 /* ---------------------------------------------------------
@@ -778,32 +782,52 @@ function openLightbox(url, caption){
 }
 
 /* ---- 快速操作按鈕 ---- */
+let lastQuickActionUndo = null; // { plantId, snapshot } 記錄動作前的植物完整狀態，供「復原」使用
 function handleQuickAction(plantId, action){
   const plant = getPlant(plantId);
   if(!plant) return;
+  const snapshot = JSON.parse(JSON.stringify(plant));
+  let message = "";
   if(action === "watered"){
     addLog(plantId, { type:"water", date: todayDateStr(), time: nowTimeStr(), note:"" });
-    showToast(`已記錄澆水！${fmtRelativeDay(plant.plan.nextSoilCheckAt)}再檢查土壤`);
+    message = `已記錄澆水！${fmtRelativeDay(plant.plan.nextSoilCheckAt)}再檢查土壤`;
   } else if(action === "notdry"){
     plant.plan.nextSoilCheckAt = delayReminder(plant.plan.nextSoilCheckAt, 1);
     plant.logs.push({ id:uid(), type:"snooze", actualAt:new Date().toISOString(), note:"表土還沒乾，延後檢查", photos:[], backfilled:false, createdAt:new Date().toISOString() });
     saveState();
-    showToast("好的，已經幫你延後一天再檢查");
+    message = "好的，已經幫你延後一天再檢查";
   } else if(action === "rained"){
     const days = plant.environment === "indoor" ? 1 : 2;
     plant.plan.nextSoilCheckAt = delayReminder(plant.plan.nextSoilCheckAt, days);
     plant.logs.push({ id:uid(), type:"rain", actualAt:new Date().toISOString(), note:"今天有淋雨，暫時不需要澆水", photos:[], backfilled:false, createdAt:new Date().toISOString() });
     saveState();
-    showToast("已記錄淋雨，順延澆水檢查時間");
+    message = "已記錄淋雨，順延澆水檢查時間";
   } else if(action === "postpone"){
     const near = nearestReminder(plant);
     const field = (near && near.field) || "nextSoilCheckAt";
     plant.plan[field] = delayReminder(plant.plan[field], 1);
     plant.logs.push({ id:uid(), type:"snooze", actualAt:new Date().toISOString(), note:"手動延後提醒", photos:[], backfilled:false, createdAt:new Date().toISOString() });
     saveState();
-    showToast("提醒已延後");
+    message = "提醒已延後";
+  } else {
+    return;
   }
+  lastQuickActionUndo = { plantId, snapshot };
+  showToast(message, undoLastQuickAction);
   renderDetail();
+}
+
+function undoLastQuickAction(){
+  if(!lastQuickActionUndo) return;
+  const { plantId, snapshot } = lastQuickActionUndo;
+  const idx = state.plants.findIndex(p => p.id === plantId);
+  lastQuickActionUndo = null;
+  if(idx === -1) return;
+  state.plants[idx] = snapshot;
+  saveState();
+  showToast("已復原剛剛的操作");
+  if(currentPlantId === plantId && screenStack[screenStack.length-1] === "detail") renderDetail();
+  else if(screenStack[screenStack.length-1] === "home") renderHome();
 }
 
 /* ---------------------------------------------------------
@@ -1173,6 +1197,13 @@ function initEvents(){
     });
   });
   document.querySelectorAll('.fab-inline[data-nav="add"]').forEach(btn => btn.addEventListener("click", openAdd));
+  document.getElementById("toastUndoBtn").addEventListener("click", () => {
+    const handler = toastUndoHandler;
+    document.getElementById("toastModal").classList.remove("open");
+    clearTimeout(toastTimer);
+    toastUndoHandler = null;
+    if(handler) handler();
+  });
   document.querySelectorAll('[data-nav="back"]').forEach(btn => btn.addEventListener("click", goBack));
   document.querySelectorAll('[data-nav="plants"]').forEach(btn => { if(!btn.classList.contains("nav-btn")) btn.addEventListener("click", () => switchTab("plants")); });
   const weatherRegionSelect = document.getElementById("weatherRegionSelect");
