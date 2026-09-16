@@ -154,8 +154,8 @@ const LOG_TYPE_TO_INTERVAL = { water:"soilCheckIntervalDays", fertilize:"fertili
       Supabase 的 Edge Function secrets 裡，不會出現在這支前端檔案中）。
    兩個值都還沒填的話（還是預留字串），天氣／AI 辨識會抓取失敗，
    App 會自動退回本機模擬資料，不會整個壞掉。 */
-const SUPABASE_FUNCTIONS_URL = "https://YOUR-PROJECT-REF.supabase.co/functions/v1"; // https://wvqqmxvkdaeswxpdcdur.supabase.co/rest/v1/functions/v1
-const SUPABASE_ANON_KEY = "wvqqmxvkdaeswxpdcdur";
+const SUPABASE_FUNCTIONS_URL = "https://wvqqmxvkdaeswxpdcdur.supabase.co/functions/v1";
+const SUPABASE_ANON_KEY = "sb_publishable_HDbfTcmhJW9j0n2D6NzY3Q_NvQONRBl";
 const API_BASE = SUPABASE_FUNCTIONS_URL;
 function supabaseHeaders(extra){
   return Object.assign({ apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY }, extra || {});
