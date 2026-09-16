@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+<title>小綠日記 · 植物照顧助理</title>
+<meta name="description" content="手繪風格的個人植物照顧記錄與提醒工具">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#FFD65C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="小綠日記">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ SVG ICON SPRITE (全部純線條手繪風圖示，無 Emoji) ============ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<defs>
+
+<symbol id="icon-home" viewBox="0 0 24 24"><path d="M3.5 11.5 L12 4 L20.5 11.5" fill="none"/><path d="M5.5 10 V20 H18.5 V10" fill="none"/><path d="M9.5 20 V14.5 H14.5 V20" fill="none"/></symbol>
+
+<symbol id="icon-leaf" viewBox="0 0 24 24"><path d="M4.5 19.5 C3 11 9 4.5 19.5 4 C20 14.5 13.5 20.5 4.5 19.5 Z" fill="none"/><path d="M5 19 C10 14 14 10 19 5" fill="none"/></symbol>
+
+<symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 4.5 V19.5 M4.5 12 H19.5" fill="none"/></symbol>
+
+<symbol id="icon-camera" viewBox="0 0 24 24"><path d="M3.5 8 H8 L9.5 5.5 H14.5 L16 8 H20.5 V19 H3.5 Z" fill="none"/><circle cx="12" cy="13" r="3.6" fill="none"/></symbol>
+
+<symbol id="icon-gear" viewBox="0 0 24 24"><path d="M4 8 H10.5 M4 12 H15 M4 16 H8" fill="none"/><circle cx="14" cy="8" r="1.9" fill="none"/><circle cx="18.5" cy="12" r="1.9" fill="none"/><circle cx="11" cy="16" r="1.9" fill="none"/></symbol>
+
+<symbol id="icon-drop" viewBox="0 0 24 24"><path d="M12 3.5 C12 3.5 5.5 12 5.5 16 A6.5 6.5 0 0 0 18.5 16 C18.5 12 12 3.5 12 3.5 Z" fill="none"/></symbol>
+
+<symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.3" fill="none"/><path d="M12 2.5 V5.5 M12 18.5 V21.5 M2.5 12 H5.5 M18.5 12 H21.5 M5 5 L7.2 7.2 M16.8 16.8 L19 19 M19 5 L16.8 7.2 M7.2 16.8 L5 19" fill="none"/></symbol>
+
+<symbol id="icon-cloud" viewBox="0 0 24 24"><path d="M6.5 17 A4 4 0 0 1 6 9 A5 5 0 0 1 16 7.3 A4.2 4.2 0 0 1 17 17 Z" fill="none"/></symbol>
+
+<symbol id="icon-cloud-rain" viewBox="0 0 24 24"><path d="M6.5 14.5 A4 4 0 0 1 6 6.5 A5 5 0 0 1 16 4.8 A4.2 4.2 0 0 1 17 14.5 Z" fill="none"/><path d="M8 17.5 L7 20 M12 17.5 L11 20 M16 17.5 L15 20" fill="none"/></symbol>
+
+<symbol id="icon-wind" viewBox="0 0 24 24"><path d="M3 8 H14 A2.4 2.4 0 1 0 12 4.5" fill="none"/><path d="M3 12.5 H17.5 A2.4 2.4 0 1 1 15.5 16.5" fill="none"/><path d="M3 17 H10" fill="none"/></symbol>
+
+<symbol id="icon-thermo" viewBox="0 0 24 24"><path d="M11 4.5 A2 2 0 0 1 15 4.5 V14.2 A3.6 3.6 0 1 1 11 14.2 Z" fill="none"/><path d="M13 6.5 V14.6" fill="none"/></symbol>
+
+<symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="1.5" fill="none"/><path d="M3.5 10 H20.5 M8 3.5 V7 M16 3.5 V7" fill="none"/></symbol>
+
+<symbol id="icon-check" viewBox="0 0 24 24"><path d="M4.5 12.5 L9.5 17.5 L19.5 6" fill="none"/></symbol>
+
+<symbol id="icon-edit" viewBox="0 0 24 24"><path d="M15 4.5 L19.5 9 L8 20.5 L3.5 21 L4 16.5 Z" fill="none"/><path d="M13 6.5 L17.5 11" fill="none"/></symbol>
+
+<symbol id="icon-back" viewBox="0 0 24 24"><path d="M15.5 4.5 L7 12 L15.5 19.5" fill="none"/></symbol>
+
+<symbol id="icon-close" viewBox="0 0 24 24"><path d="M5.5 5.5 L18.5 18.5 M18.5 5.5 L5.5 18.5" fill="none"/></symbol>
+
+<symbol id="icon-chevron-right" viewBox="0 0 24 24"><path d="M9 4.5 L17 12 L9 19.5" fill="none"/></symbol>
+
+<symbol id="icon-scissors" viewBox="0 0 24 24"><circle cx="6.5" cy="6.5" r="2.3" fill="none"/><circle cx="6.5" cy="17.5" r="2.3" fill="none"/><path d="M8.3 8 L20.5 19.5 M8.3 16 L20.5 4.5" fill="none"/></symbol>
+
+<symbol id="icon-pot" viewBox="0 0 24 24"><path d="M6 8 H18 L16.3 19 H7.7 Z" fill="none"/><path d="M4.5 8 H19.5" fill="none"/></symbol>
+
+<symbol id="icon-warn" viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z" fill="none"/><path d="M12 10 V14.5 M12 17 V17.2" fill="none"/></symbol>
+
+<symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.3" fill="none"/><path d="M12 7.5 V12.2 L15.5 14.3" fill="none"/></symbol>
+
+<symbol id="icon-bell" viewBox="0 0 24 24"><path d="M6 16 V11 A6 6 0 0 1 18 11 V16 L20 18.5 H4 Z" fill="none"/><path d="M10 20.5 A2.2 2.2 0 0 0 14 20.5" fill="none"/></symbol>
+
+<symbol id="icon-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="1.5" fill="none"/><circle cx="9" cy="10" r="1.8" fill="none"/><path d="M4.5 18 L10 12.5 L13.5 16 L16.5 13 L19.5 16.5" fill="none"/></symbol>
+
+<symbol id="icon-pin" viewBox="0 0 24 24"><path d="M12 21 C12 21 5.5 14.2 5.5 9.3 A6.5 6.5 0 0 1 18.5 9.3 C18.5 14.2 12 21 12 21 Z" fill="none"/><circle cx="12" cy="9.3" r="2.2" fill="none"/></symbol>
+
+<symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M19 6.5 V11 H14.5" fill="none"/><path d="M19 8.5 A7.5 7.5 0 1 0 20 14" fill="none"/></symbol>
+
+<symbol id="icon-suitcase" viewBox="0 0 24 24"><rect x="3.5" y="8" width="17" height="11.5" rx="1.3" fill="none"/><path d="M9 8 V5.5 A1 1 0 0 1 10 4.5 H14 A1 1 0 0 1 15 5.5 V8" fill="none"/></symbol>
+
+<symbol id="icon-moon" viewBox="0 0 24 24"><path d="M18.5 14.2 A8 8 0 1 1 9.8 4.5 A6.3 6.3 0 0 0 18.5 14.2 Z" fill="none"/></symbol>
+
+<symbol id="icon-droplets" viewBox="0 0 24 24"><path d="M9 3.5 C9 3.5 4.5 10 4.5 12.8 A4.5 4.5 0 0 0 13.5 12.8 C13.5 10 9 3.5 9 3.5 Z" fill="none"/><path d="M16.2 10.5 C16.2 10.5 13 15 13 17 a3.2 3.2 0 0 0 6.4 0 c0 -2 -3.2 -6.5 -3.2 -6.5 Z" fill="none"/></symbol>
+
+<symbol id="icon-move" viewBox="0 0 24 24"><path d="M12 3 V21 M3 12 H21 M12 3 L9 6 M12 3 L15 6 M12 21 L9 18 M12 21 L15 18 M3 12 L6 9 M3 12 L6 15 M21 12 L18 9 M21 12 L18 15" fill="none"/></symbol>
+
+</defs>
+</svg>
+
+<div id="app">
+
+  <!-- ============ HOME ============ -->
+  <section class="screen" id="screen-home" data-screen="home">
+    <header class="topbar">
+      <div class="topbar-hello">
+        <p class="eyebrow">哈囉 <span id="greetName">植物人</span> 👋</p>
+        <h1 id="todayDate" class="page-title">今天</h1>
+      </div>
+      <div class="weather-chip" id="weatherMini"></div>
+    </header>
+
+    <section class="section">
+      <h2 class="section-title"><svg class="icon"><use href="#icon-check"/></svg>今天要做</h2>
+      <div class="todo-card" id="todoList"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head-row">
+        <h2 class="section-title"><svg class="icon"><use href="#icon-leaf"/></svg>我的植物</h2>
+        <button class="link-btn" data-nav="plants">全部 <svg class="icon icon-sm"><use href="#icon-chevron-right"/></svg></button>
+      </div>
+      <div class="plant-row" id="plantCardsRow"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title"><svg class="icon"><use href="#icon-clock"/></svg>最近紀錄</h2>
+      <div class="activity-list" id="recentActivityList"></div>
+    </section>
+    <div class="bottom-spacer"></div>
+  </section>
+
+  <!-- ============ PLANTS LIST ============ -->
+  <section class="screen" id="screen-plants" data-screen="plants">
+    <header class="subbar">
+      <h1 class="page-title">我的植物</h1>
+    </header>
+    <div class="plants-grid" id="allPlantsGrid"></div>
+    <button class="fab-inline" data-nav="add"><svg class="icon"><use href="#icon-plus"/></svg>新增植物</button>
+    <div class="bottom-spacer"></div>
+  </section>
+
+  <!-- ============ PLANT DETAIL ============ -->
+  <section class="screen" id="screen-detail" data-screen="detail">
+    <header class="subbar">
+      <button class="icon-btn" data-nav="back"><svg class="icon"><use href="#icon-back"/></svg></button>
+      <h1 class="page-title" id="detailHeaderName">植物</h1>
+      <button class="icon-btn" id="editPlantBtn"><svg class="icon"><use href="#icon-edit"/></svg></button>
+    </header>
+
+    <div class="detail-hero">
+      <div class="polaroid detail-photo-frame">
+        <img id="detailPhoto" alt="">
+      </div>
+      <div class="detail-hero-info">
+        <h2 id="detailName" class="detail-name"></h2>
+        <p id="detailSpecies" class="detail-species"></p>
+        <div class="badge-row">
+          <span class="badge" id="detailEnvBadge"></span>
+          <span class="badge badge-outline" id="detailDaysBadge"></span>
+          <span class="badge badge-outline" id="detailPlaceBadge"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-actions" id="quickActions">
+      <button class="qa-btn qa-primary" data-action="watered"><svg class="icon"><use href="#icon-drop"/></svg>已澆水</button>
+      <button class="qa-btn" data-action="notdry"><svg class="icon"><use href="#icon-clock"/></svg>土還沒乾</button>
+      <button class="qa-btn" data-action="rained"><svg class="icon"><use href="#icon-cloud-rain"/></svg>今天有淋雨</button>
+      <button class="qa-btn" data-action="postpone"><svg class="icon"><use href="#icon-bell"/></svg>延後提醒</button>
+    </div>
+
+    <div class="next-check-card" id="nextCheckCard"></div>
+
+    <nav class="tabs" id="detailTabs">
+      <button class="tab-btn active" data-tab="guide">照顧指南</button>
+      <button class="tab-btn" data-tab="timeline">時間軸</button>
+      <button class="tab-btn" data-tab="album">相簿</button>
+    </nav>
+
+    <div class="tab-panel active" id="tabGuide"><div id="guideContent"></div></div>
+
+    <div class="tab-panel" id="tabTimeline">
+      <div class="timeline-actions">
+        <button class="ghost-btn" id="backfillBtn"><svg class="icon icon-sm"><use href="#icon-calendar"/></svg>補登紀錄</button>
+        <button class="ghost-btn" id="addLogBtn"><svg class="icon icon-sm"><use href="#icon-plus"/></svg>新增日記</button>
+      </div>
+      <div class="timeline" id="timelineList"></div>
+    </div>
+
+    <div class="tab-panel" id="tabAlbum">
+      <div class="album-grid" id="albumGrid"></div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </section>
+
+  <!-- ============ ADD PLANT WIZARD ============ -->
+  <section class="screen" id="screen-add" data-screen="add">
+    <header class="subbar">
+      <button class="icon-btn" data-nav="back"><svg class="icon"><use href="#icon-back"/></svg></button>
+      <h1 class="page-title">新增植物</h1>
+      <span class="icon-btn"></span>
+    </header>
+
+    <div class="wizard-progress"><span class="wp-dot" data-step="1"></span><span class="wp-dot" data-step="2"></span><span class="wp-dot" data-step="3"></span><span class="wp-dot" data-step="4"></span></div>
+
+    <!-- Step 1: photo + mock AI recognition -->
+    <div class="wizard-step active" data-step="1">
+      <p class="step-hint">拍張照片，讓我猜猜這是什麼植物</p>
+      <label class="photo-upload" for="photoInput">
+        <img id="addPhotoPreview" class="photo-preview" hidden>
+        <div class="photo-placeholder" id="photoPlaceholder">
+          <svg class="icon icon-lg"><use href="#icon-camera"/></svg>
+          <span>拍照 / 上傳照片</span>
+        </div>
+      </label>
+      <input type="file" id="photoInput" accept="image/*" capture="environment" hidden>
+
+      <div class="ai-loading" id="aiLoadingCard" hidden>
+        <span class="spinner"></span>
+        <span>AI 辨識中，請稍候...</span>
+      </div>
+
+      <div class="ai-guess-card" id="aiGuessCard" hidden>
+        <p class="ai-guess-label">這個品種正確嗎？</p>
+        <p class="ai-guess-name" id="aiGuessName"></p>
+        <p class="ai-guess-meta" id="aiGuessMeta"></p>
+        <div class="ai-guess-actions">
+          <button class="pill-btn pill-primary" id="guessYesBtn"><svg class="icon icon-sm"><use href="#icon-check"/></svg>正確</button>
+          <button class="pill-btn" id="guessRetryBtn"><svg class="icon icon-sm"><use href="#icon-refresh"/></svg>重新辨識</button>
+          <button class="pill-btn" id="guessManualBtn"><svg class="icon icon-sm"><use href="#icon-edit"/></svg>手動輸入</button>
+        </div>
+        <input type="text" class="text-input" id="manualSpeciesInput" placeholder="輸入植物品種，例如：真柏" hidden>
+      </div>
+      <button class="skip-link" id="skipPhotoBtn">先略過照片</button>
+    </div>
+
+    <!-- Step 2: name + region -->
+    <div class="wizard-step" data-step="2">
+      <label class="field-label">幫它取個名字</label>
+      <input type="text" class="text-input" id="plantNameInput" placeholder="例如：小綠">
+
+      <label class="field-label">所在縣市</label>
+      <div class="input-with-icon">
+        <svg class="icon icon-sm"><use href="#icon-pin"/></svg>
+        <input type="text" class="text-input" id="regionInput" placeholder="例如：台北市">
+      </div>
+
+      <label class="field-label">行政區<span class="field-optional">（選填，填了天氣會更準確）</span></label>
+      <div class="input-with-icon">
+        <svg class="icon icon-sm"><use href="#icon-pin"/></svg>
+        <input type="text" class="text-input" id="districtInput" placeholder="例如：松山區">
+      </div>
+    </div>
+
+    <!-- Step 3: environment -->
+    <div class="wizard-step" data-step="3">
+      <label class="field-label">種植環境</label>
+      <div class="option-grid" id="envOptionGrid">
+        <button class="option-card" data-env="indoor"><svg class="icon"><use href="#icon-home"/></svg>室內</button>
+        <button class="option-card" data-env="semi"><svg class="icon"><use href="#icon-cloud"/></svg>半戶外</button>
+        <button class="option-card" data-env="outdoor"><svg class="icon"><use href="#icon-sun"/></svg>戶外</button>
+      </div>
+    </div>
+
+    <!-- Step 4: start date -->
+    <div class="wizard-step" data-step="4">
+      <label class="field-label">開始照顧日期</label>
+      <input type="date" class="text-input" id="startDateInput">
+      <p class="step-note">完成後會自動計算「已照顧第幾天」，其他細節設定可以之後再補充。</p>
+    </div>
+
+    <div class="wizard-nav">
+      <button class="ghost-btn" id="wizardPrevBtn" hidden>上一步</button>
+      <button class="pill-btn pill-primary wizard-next" id="wizardNextBtn">下一步</button>
+    </div>
+    <div class="bottom-spacer"></div>
+  </section>
+
+  <!-- ============ FULL SETTINGS (per-plant, 事後補充) ============ -->
+  <section class="screen" id="screen-plant-settings" data-screen="plant-settings">
+    <header class="subbar">
+      <button class="icon-btn" data-nav="back"><svg class="icon"><use href="#icon-back"/></svg></button>
+      <h1 class="page-title">完整設定</h1>
+      <button class="icon-btn" id="savePlantSettingsBtn"><svg class="icon"><use href="#icon-check"/></svg></button>
+    </header>
+    <div class="form-list" id="plantSettingsForm">
+      <div class="form-row"><label>購入地點</label><input type="text" class="text-input" data-field="purchaseLocation"></div>
+      <div class="form-row"><label>窗戶方向</label>
+        <div class="chip-select" data-field="windowDirection">
+          <button class="chip" data-val="east">東</button><button class="chip" data-val="south">南</button>
+          <button class="chip" data-val="west">西</button><button class="chip" data-val="north">北</button>
+        </div>
+      </div>
+      <div class="form-row"><label>日照時間</label>
+        <div class="chip-select" data-field="sunHours">
+          <button class="chip" data-val="short">2小時以下</button><button class="chip" data-val="mid">2-5小時</button><button class="chip" data-val="long">5小時以上</button>
+        </div>
+      </div>
+      <div class="form-row"><label>光線強度</label>
+        <div class="chip-select" data-field="lightLevel">
+          <button class="chip" data-val="low">昏暗</button><button class="chip" data-val="bright-indirect">明亮散射</button><button class="chip" data-val="direct">直射強光</button>
+        </div>
+      </div>
+      <div class="form-row"><label>通風程度</label>
+        <div class="chip-select" data-field="ventilation">
+          <button class="chip" data-val="poor">不通風</button><button class="chip" data-val="ok">普通</button><button class="chip" data-val="good">通風良好</button>
+        </div>
+      </div>
+      <div class="form-row toggle-row"><label>有使用冷氣</label><button class="toggle" data-field="acUsage"></button></div>
+      <div class="form-row toggle-row"><label>有使用植物燈</label><button class="toggle" data-field="growLight"></button></div>
+      <div class="form-row"><label>花盆材質</label>
+        <div class="chip-select" data-field="potMaterial">
+          <button class="chip" data-val="clay">陶盆</button><button class="chip" data-val="plastic">塑膠盆</button><button class="chip" data-val="ceramic">瓷盆</button>
+        </div>
+      </div>
+      <div class="form-row"><label>介質排水</label>
+        <div class="chip-select" data-field="drainage">
+          <button class="chip" data-val="fast">排水快</button><button class="chip" data-val="normal">普通</button><button class="chip" data-val="slow">排水慢／保水</button>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </section>
+
+  <!-- ============ GALLERY (全部相簿/紀錄) ============ -->
+  <section class="screen" id="screen-gallery" data-screen="gallery">
+    <header class="subbar">
+      <h1 class="page-title">相簿與紀錄</h1>
+    </header>
+    <div class="filter-row">
+      <select class="select-input" id="galleryPlantFilter"></select>
+    </div>
+    <div class="album-grid" id="galleryGrid"></div>
+    <div class="bottom-spacer"></div>
+  </section>
+
+  <!-- ============ REMINDER SETTINGS ============ -->
+  <section class="screen" id="screen-settings" data-screen="settings">
+    <header class="subbar">
+      <h1 class="page-title">提醒設定</h1>
+    </header>
+    <div class="form-list">
+      <div class="form-row"><label><svg class="icon icon-sm"><use href="#icon-bell"/></svg>通知時間</label><input type="time" class="text-input" id="notifyTimeInput"></div>
+      <div class="form-row"><label><svg class="icon icon-sm"><use href="#icon-moon"/></svg>安靜時段開始</label><input type="time" class="text-input" id="quietStartInput"></div>
+      <div class="form-row"><label><svg class="icon icon-sm"><use href="#icon-moon"/></svg>安靜時段結束</label><input type="time" class="text-input" id="quietEndInput"></div>
+      <div class="form-row toggle-row"><label>多株植物合併通知</label><button class="toggle" id="mergeNotifToggle"></button></div>
+      <div class="form-row toggle-row"><label><svg class="icon icon-sm"><use href="#icon-suitcase"/></svg>外出旅行模式</label><button class="toggle" id="travelModeToggle"></button></div>
+    </div>
+
+    <div class="api-status-card" id="apiStatusCard">
+      <p class="api-status-title"><svg class="icon icon-sm"><use href="#icon-gear"/></svg>即時服務用量</p>
+      <p class="api-status-line" id="weatherUsageLine">天氣 API：讀取中...</p>
+      <p class="api-status-line" id="identifyUsageLine">AI 品種辨識：讀取中...</p>
+      <p class="api-status-hint">天氣快取 4 小時內同地區共用一筆；AI 辨識每日有次數上限，用完會自動改為手動輸入品種。</p>
+    </div>
+
+    <div class="danger-zone">
+      <button class="ghost-btn" id="resetDataBtn">重設所有資料（恢復預設四筆植物）</button>
+    </div>
+    <div class="bottom-spacer"></div>
+  </section>
+
+</div>
+
+<!-- ============ BOTTOM NAV ============ -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="nav-btn active" data-nav="home"><svg class="icon"><use href="#icon-home"/></svg><span>首頁</span></button>
+  <button class="nav-btn" data-nav="plants"><svg class="icon"><use href="#icon-leaf"/></svg><span>植物</span></button>
+  <button class="nav-btn nav-add" data-nav="add"><svg class="icon"><use href="#icon-plus"/></svg></button>
+  <button class="nav-btn" data-nav="gallery"><svg class="icon"><use href="#icon-image"/></svg><span>相簿</span></button>
+  <button class="nav-btn" data-nav="settings"><svg class="icon"><use href="#icon-gear"/></svg><span>設定</span></button>
+</nav>
+
+<!-- ============ MODALS ============ -->
+<div class="modal-backdrop" id="modalBackdrop">
+
+  <div class="modal" id="logModal">
+    <div class="modal-head">
+      <h3 id="logModalTitle">新增紀錄</h3>
+      <button class="icon-btn" data-close-modal><svg class="icon"><use href="#icon-close"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <label class="field-label">類型</label>
+      <div class="chip-select" id="logTypeChips">
+        <button class="chip" data-val="water">澆水</button>
+        <button class="chip" data-val="fertilize">施肥</button>
+        <button class="chip" data-val="prune">修剪</button>
+        <button class="chip" data-val="repot">換盆</button>
+        <button class="chip" data-val="move">移動位置</button>
+        <button class="chip" data-val="pest">病蟲害</button>
+        <button class="chip" data-val="diary">成長日記</button>
+      </div>
+      <label class="field-label">日期與時間</label>
+      <div class="row-2">
+        <input type="date" class="text-input" id="logDateInput">
+        <input type="time" class="text-input" id="logTimeInput">
+      </div>
+      <label class="field-label">照片</label>
+      <label class="photo-upload photo-upload-sm" for="logPhotoInput">
+        <img id="logPhotoPreview" class="photo-preview" hidden>
+        <div class="photo-placeholder" id="logPhotoPlaceholder"><svg class="icon"><use href="#icon-camera"/></svg><span>新增照片</span></div>
+      </label>
+      <input type="file" id="logPhotoInput" accept="image/*" hidden multiple>
+      <label class="field-label">筆記</label>
+      <textarea class="text-input textarea" id="logNoteInput" placeholder="寫點什麼吧..."></textarea>
+      <p class="backfill-flag" id="backfillFlagNote" hidden>此紀錄將標示為「後來補登」，並重新計算平均間隔與下一次提醒</p>
+    </div>
+    <div class="modal-foot">
+      <button class="pill-btn pill-primary" id="saveLogBtn"><svg class="icon icon-sm"><use href="#icon-check"/></svg>儲存</button>
+    </div>
+  </div>
+
+  <div class="modal modal-lightbox" id="lightboxModal">
+    <button class="icon-btn lightbox-close" data-close-modal><svg class="icon"><use href="#icon-close"/></svg></button>
+    <img id="lightboxImg" alt="">
+    <p id="lightboxCaption"></p>
+  </div>
+
+
+</div>
+
+<div class="modal-toast" id="toastModal">
+  <svg class="icon"><use href="#icon-check"/></svg>
+  <span id="toastText"></span>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

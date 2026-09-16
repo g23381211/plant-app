@@ -1,0 +1,14 @@
+# 這個 repo 之後會推到 GitHub Pages 用的「公開」repo，
+# 絕對不能把任何金鑰檔案一起推上去。
+server/.env
+server/node_modules/
+server/data/
+.DS_Store
+*.log
+
+# Supabase CLI 本機暫存
+supabase/.temp/
+.env
+
+# 這個資料夾是先前操作留下的真實金鑰檔複本，絕對不能進 git
+Claude outputs/

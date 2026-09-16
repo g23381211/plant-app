@@ -1,0 +1,16 @@
+{
+  "name": "plantapp-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "小綠日記 植物照顧助理 — 後端服務（天氣快取代理 + AI 品種辨識代理，同時提供前端靜態檔案）",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
