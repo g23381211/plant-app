@@ -606,7 +606,9 @@ function renderHome(){
   });
 
   const row = document.getElementById("plantCardsRow");
-  row.innerHTML = state.plants.map(p => plantCardHTML(p)).join("");
+  row.innerHTML = state.plants.length
+    ? state.plants.map(p => plantCardHTML(p)).join("")
+    : `<div class="empty-state">還沒有任何植物，點下方「新增」開始建檔吧</div>`;
   bindPlantCardClicks(row);
 
   const activity = document.getElementById("recentActivityList");
@@ -648,7 +650,9 @@ function daysCared(p){ return Math.max(1, diffDays(p.startDate, todayDateStr()) 
 
 function renderPlantsGrid(){
   const grid = document.getElementById("allPlantsGrid");
-  grid.innerHTML = state.plants.map(p => plantCardHTML(p)).join("");
+  grid.innerHTML = state.plants.length
+    ? state.plants.map(p => plantCardHTML(p)).join("")
+    : `<div class="empty-state">還沒有任何植物，點右下角的「＋」開始建檔吧</div>`;
   bindPlantCardClicks(grid);
 }
 
@@ -964,6 +968,17 @@ function savePlantSettings(){
   goBack();
 }
 
+function deletePlant(plantId){
+  const plant = getPlant(plantId);
+  if(!plant) return;
+  if(!confirm(`確定要刪除「${plant.name}」嗎？這株植物的所有紀錄和照片都會一併刪除，此動作無法復原。`)) return;
+  state.plants = state.plants.filter(p => p.id !== plantId);
+  saveState();
+  showToast(`「${plant.name}」已刪除`);
+  screenStack = ["plants"];
+  render("plants");
+}
+
 /* ---------------------------------------------------------
    12. 相簿／紀錄總覽
 --------------------------------------------------------- */
@@ -1204,6 +1219,7 @@ function initEvents(){
   bindSingleSelect(document.getElementById("plantSettingsForm"), ".chip-select", ".chip");
   document.querySelectorAll('#plantSettingsForm .toggle').forEach(t => t.addEventListener("click", () => t.classList.toggle("on")));
   document.getElementById("savePlantSettingsBtn").addEventListener("click", savePlantSettings);
+  document.getElementById("deletePlantBtn").addEventListener("click", () => deletePlant(currentPlantId));
 
   /* ---- global settings ---- */
   ["notifyTimeInput","quietStartInput","quietEndInput"].forEach(id => {
