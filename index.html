@@ -212,7 +212,7 @@
           <span>拍照 / 上傳照片</span>
         </div>
       </label>
-      <input type="file" id="photoInput" accept="image/*" capture="environment" hidden>
+      <input type="file" id="photoInput" accept="image/*" hidden>
 
       <div class="ai-loading" id="aiLoadingCard" hidden>
         <span class="spinner"></span>
@@ -282,7 +282,16 @@
       <h1 class="page-title">完整設定</h1>
       <button class="icon-btn" id="savePlantSettingsBtn"><svg class="icon"><use href="#icon-check"/></svg></button>
     </header>
+    <label class="photo-upload photo-upload-sm" for="plantPhotoInput">
+      <img id="plantSettingsPhotoPreview" class="photo-preview" hidden>
+      <div class="photo-placeholder" id="plantSettingsPhotoPlaceholder">
+        <svg class="icon icon-lg"><use href="#icon-camera"/></svg>
+        <span>更換照片</span>
+      </div>
+    </label>
+    <input type="file" id="plantPhotoInput" accept="image/*" hidden>
     <div class="form-list" id="plantSettingsForm">
+      <div class="form-row"><label>暱稱</label><input type="text" class="text-input" id="plantNicknameInput" placeholder="例如：小綠"></div>
       <div class="form-row"><label>購入地點</label><input type="text" class="text-input" data-field="purchaseLocation"></div>
       <div class="form-row"><label>窗戶方向</label>
         <div class="chip-select" data-field="windowDirection">

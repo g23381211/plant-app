@@ -939,6 +939,14 @@ const CHIP_FIELDS = ["windowDirection","sunHours","lightLevel","ventilation","po
 function renderPlantSettingsForm(){
   const plant = getPlant(currentPlantId);
   if(!plant) return;
+  document.getElementById("plantNicknameInput").value = plant.name || "";
+  const photoPreview = document.getElementById("plantSettingsPhotoPreview");
+  const photoPlaceholder = document.getElementById("plantSettingsPhotoPlaceholder");
+  if(plant.photo){
+    photoPreview.src = plant.photo; photoPreview.hidden = false; photoPlaceholder.hidden = true;
+  } else {
+    photoPreview.hidden = true; photoPlaceholder.hidden = false;
+  }
   const form = document.getElementById("plantSettingsForm");
   form.querySelector('[data-field="purchaseLocation"]').value = plant.settings.purchaseLocation || "";
   CHIP_FIELDS.forEach(f => {
@@ -953,6 +961,8 @@ function savePlantSettings(){
   // 每天 10 次的 AI 額度要留給真的需要辨識新植物照片的時候用。
   const plant = getPlant(currentPlantId);
   if(!plant) return;
+  const nickname = document.getElementById("plantNicknameInput").value.trim();
+  if(nickname) plant.name = nickname;
   const form = document.getElementById("plantSettingsForm");
   plant.settings.purchaseLocation = form.querySelector('[data-field="purchaseLocation"]').value.trim();
   CHIP_FIELDS.forEach(f => {
@@ -1227,6 +1237,17 @@ function initEvents(){
   /* ---- plant full settings ---- */
   bindSingleSelect(document.getElementById("plantSettingsForm"), ".chip-select", ".chip");
   document.querySelectorAll('#plantSettingsForm .toggle').forEach(t => t.addEventListener("click", () => t.classList.toggle("on")));
+  document.getElementById("plantPhotoInput").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const plant = getPlant(currentPlantId);
+    if(!plant) return;
+    const dataUrl = await resizeImageFile(file, 768);
+    plant.photo = dataUrl;
+    saveState();
+    renderPlantSettingsForm();
+    showToast("照片已更新");
+  });
   document.getElementById("savePlantSettingsBtn").addEventListener("click", savePlantSettings);
   document.getElementById("deletePlantBtn").addEventListener("click", () => deletePlant(currentPlantId));
 
